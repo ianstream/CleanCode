@@ -7,7 +7,7 @@ class NewVisitorTest(unittest.TestCase):
     def setUp(self):
         print("setUp")
         self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
+        #self.browser.implicitly_wait(3)
 
     def tearDown(self):
         print("tearDown")
@@ -43,3 +43,7 @@ class NewVisitorTest(unittest.TestCase):
         # 만족하고 꿈나라로
 
         print("test_can_start_a_list_and_retrieve_it_later end")
+
+if __name__ == "__main__":
+    unittest.main(warnings='ignore')
+
