@@ -54,7 +54,6 @@ class NewVisitorTest(unittest.TestCase):
 
         # 만족하고 꿈나라로
 
-
 if __name__ == "__main__":
     unittest.main(warnings='ignore')
 
