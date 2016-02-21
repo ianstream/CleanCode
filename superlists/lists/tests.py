@@ -31,20 +31,32 @@ class HomePageTest(TestCase):
 
         response = home_page(request)
 
-        #self.assertIn('신규 작업 아이템', response.content.decode())
-        expected_html = render_to_string(
-            'home.html',
-            {'new_item_text': '신규 작업 아이템'}
-        )
-        print(expected_html)
-        print("*************************")
-        print(response.content.decode())
+        self.assertEqual(Item.objects.count(), 1)
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, '신규 작업 아이템')
 
-        """
-        아래 두 값은 같을수가 없음
-        전자는 csrf 로 암호화된 코드가 포함된 반면, 후자는 평문 html 만을 포함한다
-        """
-        #self.assertEqual(response.content.decode(), expected_html)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/')
+        # expected_html = render_to_string(
+        #     'home.html',
+        #     {'new_item_text': '신규 작업 아이템'}
+        # )
+        # self.assertEqual(response.content.decode(), expected_html)
+
+    def test_home_page_only_saves_items_when_nescessary(self):
+        request = HttpRequest()
+        home_page(request)
+        self.assertEqual(Item.objects.count(), 0)
+
+    def test_home_page_display_all_list_items(self):
+        Item.objects.create(text='itemey 1')
+        Item.objects.create(text='itemey 2')
+
+        request = HttpRequest()
+        response = home_page(request)
+
+        self.assertIn('itemey 1', response.content.decode())
+        self.assertIn('itemey 2', response.content.decode())
 
 class ItemModelTest(TestCase):
     def test_saving_and_retrieving_items(self):
