@@ -21,11 +21,29 @@ class HomePageTest(TestCase):
         request = HttpRequest()
         response = home_page(request)
         expected_html = render_to_string('home.html')
+        # self.assertEqual(response.content.decode(), expected_html)
 
-        print('*** expected_html ***')
+    def test_home_page_can_save_a_POST_request(self):
+        # https://docs.djangoproject.com/en/1.9/ref/request-response/
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['item_text'] = '신규 작업 아이템'
+
+        response = home_page(request)
+
+        self.assertIn('신규 작업 아이템', response.content.decode())
+        expected_html = render_to_string(
+            'home.html',
+            {'new_item_text': '신규 작업 아이템'}
+        )
         print(expected_html)
-        print('*** expected_html ***')
+        print("*************************")
+        print(response.content.decode())
 
+        """
+        아래 두 값은 같을수가 없음
+        전자는 csrf 로 암호화된 코드가 포함된 반면, 후자는 평문 html 만을 포함한다
+        """
         self.assertEqual(response.content.decode(), expected_html)
 
 
