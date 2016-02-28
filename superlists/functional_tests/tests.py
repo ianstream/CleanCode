@@ -1,11 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import unittest
-import time
+from django.test import LiveServerTestCase
 
 
-class NewVisitorTest(unittest.TestCase):
-
+#  python3 tests_ver2_2.py
+class NewVisitorTest(LiveServerTestCase):
     def setUp(self):
         print("*** setUp ***")
         self.browser = webdriver.Firefox()
@@ -17,7 +16,7 @@ class NewVisitorTest(unittest.TestCase):
 
     def test_can_start_a_list_and_retrieve_it_later(self):
         # 에디스는 웹 사이트를 확인하러 간다
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # 웹 페이지 타이틀과 헤더가 To-Do 를 표시하고 있다
         self.assertIn('To-Do', self.browser.title)
@@ -64,6 +63,5 @@ class NewVisitorTest(unittest.TestCase):
         rows = table.find_element_by_tag_name('tr')
         self.assertIn(row_text, [row.text for row in rows])
 
-if __name__ == "__main__":
-    unittest.main(warnings='ignore')
+
 
