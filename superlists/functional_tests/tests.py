@@ -1,10 +1,11 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from django.test import LiveServerTestCase
 
 
 #  python3 tests_ver2_2.py
 class NewVisitorTest(LiveServerTestCase):
+
     def setUp(self):
         print("*** setUp ***")
         self.browser = webdriver.Firefox()
